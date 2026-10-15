@@ -1,6 +1,8 @@
-
+-- =============================================================================
+-- Electronica Central AZ - Script para poblar la base de datos
+-- =============================================================================
 BEGIN;
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
+SET LOCAL search_path TO electronica_az, public;
 
 -- ROLES
 INSERT INTO rol (id_rol, nombre, descripcion) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', 'ADMINISTRADOR', 'Acceso completo al sistema') ON CONFLICT (nombre) DO NOTHING;
@@ -32,94 +34,94 @@ INSERT INTO permiso (id_permiso, codigo, descripcion) VALUES ('1a6902a5-0e4a-45c
 INSERT INTO permiso (id_permiso, codigo, descripcion) VALUES ('36a70a17-c295-43e5-bf10-b039fcad83cf', 'COMPROBANTE_EMITIR', 'Comprobante Emitir') ON CONFLICT (codigo) DO NOTHING;
 
 -- 20 USUARIOS. Contraseña inicial para todos: Cambiar123!
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('2fc77e4e-9205-4957-965d-30133c1827ab', 'carlosmendoza', 'carlosmendoza@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('7320e433-f66b-4afa-ba0f-ef71f0de2edd', 'mariafernandez', 'mariafernandez@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('721dbc39-69f4-4676-9374-c71d508fa299', 'luisvargas', 'luisvargas@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('5936ce04-3b52-4f5d-9704-3aed9f79a5c0', 'anaaguilar', 'anaaguilar@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('f77ef233-8074-4e2d-8e50-c64bd2377d16', 'jorgerojas', 'jorgerojas@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('76e2b10a-abf4-4ee1-a391-10f13c23e684', 'sofiaperez', 'sofiaperez@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('2647037d-1e82-47e0-8ffd-3d6920c7ffc6', 'diegosuarez', 'diegosuarez@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('63c74c17-d14b-40c9-853a-948660069510', 'juanquispe', 'juanquispe@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('817f6cd4-2472-47b0-bf0c-feaec89ec139', 'lauragutierrez', 'lauragutierrez@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('ae245e26-6af1-498c-b390-375b49703122', 'migueltorrez', 'migueltorrez@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('66ded10b-51da-4458-9c16-42cfbe20bc37', 'valeriaflores', 'valeriaflores@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('0151e839-0ef0-484b-8a3d-fcb48ab796f6', 'rubenmorales', 'rubenmorales@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('c861ec45-4678-4069-997e-d4ebe5485e4f', 'danielcallejas', 'danielcallejas@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('22a58750-f800-451f-979d-9df905fa1d56', 'paolamelgar', 'paolamelgar@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('1d0ee282-e41b-41cd-ad1e-0d7e59249bb3', 'andresrocha', 'andresrocha@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('d866632c-3ef5-41be-8ad4-2c4c40e36c76', 'gabrielacuellar', 'gabrielacuellar@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('23292675-78f0-4c7e-9a89-ca42554f4adf', 'fernandoantelo', 'fernandoantelo@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('3e354f42-4881-4944-8d8f-d12f8c492660', 'taniajustiniano', 'taniajustiniano@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
-INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('24cc1ce2-7242-45e5-a5c9-78064d473ec7', 'oscarsalvatierra', 'oscarsalvatierra@gmail.com', crypt('Cambiar123!', gen_salt('bf')), true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('2fc77e4e-9205-4957-965d-30133c1827ab', 'carlosmendoza', 'carlosmendoza@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('7320e433-f66b-4afa-ba0f-ef71f0de2edd', 'mariafernandez', 'mariafernandez@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('721dbc39-69f4-4676-9374-c71d508fa299', 'luisvargas', 'luisvargas@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('5936ce04-3b52-4f5d-9704-3aed9f79a5c0', 'anaaguilar', 'anaaguilar@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('f77ef233-8074-4e2d-8e50-c64bd2377d16', 'jorgerojas', 'jorgerojas@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('76e2b10a-abf4-4ee1-a391-10f13c23e684', 'sofiaperez', 'sofiaperez@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('2647037d-1e82-47e0-8ffd-3d6920c7ffc6', 'diegosuarez', 'diegosuarez@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('63c74c17-d14b-40c9-853a-948660069510', 'juanquispe', 'juanquispe@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('817f6cd4-2472-47b0-bf0c-feaec89ec139', 'lauragutierrez', 'lauragutierrez@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('ae245e26-6af1-498c-b390-375b49703122', 'migueltorrez', 'migueltorrez@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('66ded10b-51da-4458-9c16-42cfbe20bc37', 'valeriaflores', 'valeriaflores@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('0151e839-0ef0-484b-8a3d-fcb48ab796f6', 'rubenmorales', 'rubenmorales@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('c861ec45-4678-4069-997e-d4ebe5485e4f', 'danielcallejas', 'danielcallejas@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('22a58750-f800-451f-979d-9df905fa1d56', 'paolamelgar', 'paolamelgar@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('1d0ee282-e41b-41cd-ad1e-0d7e59249bb3', 'andresrocha', 'andresrocha@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('d866632c-3ef5-41be-8ad4-2c4c40e36c76', 'gabrielacuellar', 'gabrielacuellar@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('23292675-78f0-4c7e-9a89-ca42554f4adf', 'fernandoantelo', 'fernandoantelo@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('3e354f42-4881-4944-8d8f-d12f8c492660', 'taniajustiniano', 'taniajustiniano@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
+INSERT INTO usuario (id_usuario, nombre_usuario, correo, hash_contrasena, activo) VALUES ('24cc1ce2-7242-45e5-a5c9-78064d473ec7', 'oscarsalvatierra', 'oscarsalvatierra@gmail.com', 'scrypt$88d388e14d325ef7afde8617bf5e95c4$303cfed7a52d6692c019eb7e76d63391fc29bd518849d214875567a2a1260b1c7494bb5fe13b85fe76bc41447cbc30823ad2aaca45b766eea515e0eb2dbbaed5', true) ON CONFLICT (nombre_usuario) DO NOTHING;
 
 -- USUARIO_ROL
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('2fc77e4e-9205-4957-965d-30133c1827ab', 'e25d52b9-6607-49df-b513-46db957826e8') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('7320e433-f66b-4afa-ba0f-ef71f0de2edd', 'c1ed6468-3036-429e-b78d-9521bb1e577c') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('721dbc39-69f4-4676-9374-c71d508fa299', 'c1ed6468-3036-429e-b78d-9521bb1e577c') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('5936ce04-3b52-4f5d-9704-3aed9f79a5c0', 'c1ed6468-3036-429e-b78d-9521bb1e577c') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('f77ef233-8074-4e2d-8e50-c64bd2377d16', 'c1ed6468-3036-429e-b78d-9521bb1e577c') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('76e2b10a-abf4-4ee1-a391-10f13c23e684', 'c1ed6468-3036-429e-b78d-9521bb1e577c') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('2647037d-1e82-47e0-8ffd-3d6920c7ffc6', '2eecc979-41c3-4f17-9271-f6d7379c778c') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('63c74c17-d14b-40c9-853a-948660069510', '2eecc979-41c3-4f17-9271-f6d7379c778c') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('817f6cd4-2472-47b0-bf0c-feaec89ec139', '2eecc979-41c3-4f17-9271-f6d7379c778c') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('ae245e26-6af1-498c-b390-375b49703122', '2eecc979-41c3-4f17-9271-f6d7379c778c') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('66ded10b-51da-4458-9c16-42cfbe20bc37', '9e33e500-7c36-480b-bcea-a4e10ebcfda3') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('0151e839-0ef0-484b-8a3d-fcb48ab796f6', '9e33e500-7c36-480b-bcea-a4e10ebcfda3') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('c861ec45-4678-4069-997e-d4ebe5485e4f', '9e33e500-7c36-480b-bcea-a4e10ebcfda3') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('22a58750-f800-451f-979d-9df905fa1d56', '9e33e500-7c36-480b-bcea-a4e10ebcfda3') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('1d0ee282-e41b-41cd-ad1e-0d7e59249bb3', 'a8769f3d-eb53-4f52-bbdf-d877e5742222') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('d866632c-3ef5-41be-8ad4-2c4c40e36c76', 'a8769f3d-eb53-4f52-bbdf-d877e5742222') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('23292675-78f0-4c7e-9a89-ca42554f4adf', 'a8769f3d-eb53-4f52-bbdf-d877e5742222') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('3e354f42-4881-4944-8d8f-d12f8c492660', 'a8769f3d-eb53-4f52-bbdf-d877e5742222') ON CONFLICT DO NOTHING;
-INSERT INTO usuario_rol (id_usuario, id_rol) VALUES ('24cc1ce2-7242-45e5-a5c9-78064d473ec7', 'a8769f3d-eb53-4f52-bbdf-d877e5742222') ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '2fc77e4e-9205-4957-965d-30133c1827ab', id_rol FROM rol WHERE nombre = 'ADMINISTRADOR' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '7320e433-f66b-4afa-ba0f-ef71f0de2edd', id_rol FROM rol WHERE nombre = 'VENDEDOR' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '721dbc39-69f4-4676-9374-c71d508fa299', id_rol FROM rol WHERE nombre = 'VENDEDOR' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '5936ce04-3b52-4f5d-9704-3aed9f79a5c0', id_rol FROM rol WHERE nombre = 'VENDEDOR' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT 'f77ef233-8074-4e2d-8e50-c64bd2377d16', id_rol FROM rol WHERE nombre = 'VENDEDOR' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '76e2b10a-abf4-4ee1-a391-10f13c23e684', id_rol FROM rol WHERE nombre = 'VENDEDOR' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '2647037d-1e82-47e0-8ffd-3d6920c7ffc6', id_rol FROM rol WHERE nombre = 'ALMACENERO' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '63c74c17-d14b-40c9-853a-948660069510', id_rol FROM rol WHERE nombre = 'ALMACENERO' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '817f6cd4-2472-47b0-bf0c-feaec89ec139', id_rol FROM rol WHERE nombre = 'ALMACENERO' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT 'ae245e26-6af1-498c-b390-375b49703122', id_rol FROM rol WHERE nombre = 'ALMACENERO' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '66ded10b-51da-4458-9c16-42cfbe20bc37', id_rol FROM rol WHERE nombre = 'CAJERO' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '0151e839-0ef0-484b-8a3d-fcb48ab796f6', id_rol FROM rol WHERE nombre = 'CAJERO' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT 'c861ec45-4678-4069-997e-d4ebe5485e4f', id_rol FROM rol WHERE nombre = 'CAJERO' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '22a58750-f800-451f-979d-9df905fa1d56', id_rol FROM rol WHERE nombre = 'CAJERO' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '1d0ee282-e41b-41cd-ad1e-0d7e59249bb3', id_rol FROM rol WHERE nombre = 'SUPERVISOR' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT 'd866632c-3ef5-41be-8ad4-2c4c40e36c76', id_rol FROM rol WHERE nombre = 'SUPERVISOR' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '23292675-78f0-4c7e-9a89-ca42554f4adf', id_rol FROM rol WHERE nombre = 'SUPERVISOR' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '3e354f42-4881-4944-8d8f-d12f8c492660', id_rol FROM rol WHERE nombre = 'SUPERVISOR' ON CONFLICT DO NOTHING;
+INSERT INTO usuario_rol (id_usuario, id_rol) SELECT '24cc1ce2-7242-45e5-a5c9-78064d473ec7', id_rol FROM rol WHERE nombre = 'SUPERVISOR' ON CONFLICT DO NOTHING;
 
 -- ROL_PERMISO
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '27beb447-1476-4ce0-9147-c0d9153c2c6d') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', 'f6b17411-954b-457d-886a-cc5f8162adfc') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '23725dad-fc59-4a5b-82ba-ac3cd0a6ffbc') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', 'f399b2b8-4ef1-4015-8d4b-b8e2f320af4d') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '5eedcf38-6bb8-4c00-9d3f-f5f71453bb7c') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '84e8a210-9bf4-4812-9038-a21221520b46') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '33e3e45c-4e42-42ff-8673-c1ba7aad7628') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', 'b3d69529-e1a3-4dc9-a55a-3aa506d41ca5') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '6e905db5-43ac-4bcd-9d6e-5296da841ee3') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '05c53f1b-e432-46a6-aff0-a92ab7a8e50b') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', 'f1824830-7b5e-46a9-9324-898e0f7e56d8') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '8de630ca-e107-4596-bd86-ea720b9aee32') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '12bb9af3-d1fa-41f4-bbc6-052f0197c297') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '21e038b1-5b90-4dc5-ad4a-762ff708c49b') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', 'b6b3766b-8023-485e-bfe0-05d5e2f13ebd') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', 'f9afcf5d-8e38-48de-8f27-0af8f2a0ed5c') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '8e64872a-ac96-4bb5-8c3c-5729fef98eaf') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '015c2eab-9745-4157-a36c-cc9588416361') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '1a6902a5-0e4a-45ce-9051-4e57071a6c6e') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('e25d52b9-6607-49df-b513-46db957826e8', '36a70a17-c295-43e5-bf10-b039fcad83cf') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('c1ed6468-3036-429e-b78d-9521bb1e577c', '84e8a210-9bf4-4812-9038-a21221520b46') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('c1ed6468-3036-429e-b78d-9521bb1e577c', '33e3e45c-4e42-42ff-8673-c1ba7aad7628') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('c1ed6468-3036-429e-b78d-9521bb1e577c', '21e038b1-5b90-4dc5-ad4a-762ff708c49b') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('c1ed6468-3036-429e-b78d-9521bb1e577c', 'b6b3766b-8023-485e-bfe0-05d5e2f13ebd') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('c1ed6468-3036-429e-b78d-9521bb1e577c', '8e64872a-ac96-4bb5-8c3c-5729fef98eaf') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('c1ed6468-3036-429e-b78d-9521bb1e577c', '015c2eab-9745-4157-a36c-cc9588416361') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('c1ed6468-3036-429e-b78d-9521bb1e577c', '36a70a17-c295-43e5-bf10-b039fcad83cf') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('2eecc979-41c3-4f17-9271-f6d7379c778c', '84e8a210-9bf4-4812-9038-a21221520b46') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('2eecc979-41c3-4f17-9271-f6d7379c778c', '5eedcf38-6bb8-4c00-9d3f-f5f71453bb7c') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('2eecc979-41c3-4f17-9271-f6d7379c778c', '33e3e45c-4e42-42ff-8673-c1ba7aad7628') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('2eecc979-41c3-4f17-9271-f6d7379c778c', 'b3d69529-e1a3-4dc9-a55a-3aa506d41ca5') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('2eecc979-41c3-4f17-9271-f6d7379c778c', '6e905db5-43ac-4bcd-9d6e-5296da841ee3') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('2eecc979-41c3-4f17-9271-f6d7379c778c', '05c53f1b-e432-46a6-aff0-a92ab7a8e50b') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('2eecc979-41c3-4f17-9271-f6d7379c778c', 'f1824830-7b5e-46a9-9324-898e0f7e56d8') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('2eecc979-41c3-4f17-9271-f6d7379c778c', '8de630ca-e107-4596-bd86-ea720b9aee32') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('2eecc979-41c3-4f17-9271-f6d7379c778c', '12bb9af3-d1fa-41f4-bbc6-052f0197c297') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('9e33e500-7c36-480b-bcea-a4e10ebcfda3', '8e64872a-ac96-4bb5-8c3c-5729fef98eaf') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('9e33e500-7c36-480b-bcea-a4e10ebcfda3', '015c2eab-9745-4157-a36c-cc9588416361') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('9e33e500-7c36-480b-bcea-a4e10ebcfda3', '1a6902a5-0e4a-45ce-9051-4e57071a6c6e') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('9e33e500-7c36-480b-bcea-a4e10ebcfda3', '36a70a17-c295-43e5-bf10-b039fcad83cf') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('a8769f3d-eb53-4f52-bbdf-d877e5742222', '84e8a210-9bf4-4812-9038-a21221520b46') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('a8769f3d-eb53-4f52-bbdf-d877e5742222', '33e3e45c-4e42-42ff-8673-c1ba7aad7628') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('a8769f3d-eb53-4f52-bbdf-d877e5742222', '05c53f1b-e432-46a6-aff0-a92ab7a8e50b') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('a8769f3d-eb53-4f52-bbdf-d877e5742222', '12bb9af3-d1fa-41f4-bbc6-052f0197c297') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('a8769f3d-eb53-4f52-bbdf-d877e5742222', '8e64872a-ac96-4bb5-8c3c-5729fef98eaf') ON CONFLICT DO NOTHING;
-INSERT INTO rol_permiso (id_rol, id_permiso) VALUES ('a8769f3d-eb53-4f52-bbdf-d877e5742222', '1a6902a5-0e4a-45ce-9051-4e57071a6c6e') ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'USUARIO_CREAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'USUARIO_EDITAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'USUARIO_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'PRODUCTO_CREAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'PRODUCTO_EDITAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'PRODUCTO_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'INVENTARIO_VER' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'INVENTARIO_MOVIMIENTO' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'PROVEEDOR_CREAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'PROVEEDOR_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'COMPRA_CREAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'COMPRA_RECIBIR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'COMPRA_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'VENTA_CREAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'VENTA_CONFIRMAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'VENTA_ANULAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'VENTA_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'PAGO_REGISTRAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'PAGO_CONFIRMAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ADMINISTRADOR' AND p.codigo = 'COMPROBANTE_EMITIR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'VENDEDOR' AND p.codigo = 'PRODUCTO_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'VENDEDOR' AND p.codigo = 'INVENTARIO_VER' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'VENDEDOR' AND p.codigo = 'VENTA_CREAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'VENDEDOR' AND p.codigo = 'VENTA_CONFIRMAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'VENDEDOR' AND p.codigo = 'VENTA_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'VENDEDOR' AND p.codigo = 'PAGO_REGISTRAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'VENDEDOR' AND p.codigo = 'COMPROBANTE_EMITIR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ALMACENERO' AND p.codigo = 'PRODUCTO_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ALMACENERO' AND p.codigo = 'PRODUCTO_EDITAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ALMACENERO' AND p.codigo = 'INVENTARIO_VER' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ALMACENERO' AND p.codigo = 'INVENTARIO_MOVIMIENTO' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ALMACENERO' AND p.codigo = 'PROVEEDOR_CREAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ALMACENERO' AND p.codigo = 'PROVEEDOR_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ALMACENERO' AND p.codigo = 'COMPRA_CREAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ALMACENERO' AND p.codigo = 'COMPRA_RECIBIR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'ALMACENERO' AND p.codigo = 'COMPRA_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'CAJERO' AND p.codigo = 'VENTA_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'CAJERO' AND p.codigo = 'PAGO_REGISTRAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'CAJERO' AND p.codigo = 'PAGO_CONFIRMAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'CAJERO' AND p.codigo = 'COMPROBANTE_EMITIR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'SUPERVISOR' AND p.codigo = 'PRODUCTO_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'SUPERVISOR' AND p.codigo = 'INVENTARIO_VER' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'SUPERVISOR' AND p.codigo = 'PROVEEDOR_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'SUPERVISOR' AND p.codigo = 'COMPRA_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'SUPERVISOR' AND p.codigo = 'VENTA_LISTAR' ON CONFLICT DO NOTHING;
+INSERT INTO rol_permiso (id_rol, id_permiso) SELECT r.id_rol, p.id_permiso FROM rol r, permiso p WHERE r.nombre = 'SUPERVISOR' AND p.codigo = 'PAGO_CONFIRMAR' ON CONFLICT DO NOTHING;
 
 -- CATEGORIAS
 INSERT INTO categoria (id_categoria, nombre, descripcion) VALUES ('6d7e24f4-54ad-45fe-9ec1-cb2adafb99e4', 'Circuitos Integrados Digitales', 'Categoria Circuitos Integrados Digitales') ON CONFLICT DO NOTHING;
@@ -214,6 +216,88 @@ INSERT INTO producto (id_producto, codigo, nombre, descripcion, precio_venta, ac
 INSERT INTO producto (id_producto, codigo, nombre, descripcion, precio_venta, activo, id_categoria, id_unidad_medida, id_ubicacion, id_marca, id_modelo) VALUES ('c9af381d-9291-400a-8053-cef02a0bb5bb', 'SERVOMOTOR SG90', 'Servomotor SG90 1.5kg', NULL, 25.0000, true, 'fe000e7d-168b-4b75-bec2-69cb5fcc72f6', '643fe0a8-d95d-42eb-bb98-c82f738d6c84', 'e6c67c7d-f2fd-4bac-acc0-c14aa8d0e3d2', NULL, NULL) ON CONFLICT (codigo) DO NOTHING;
 INSERT INTO producto (id_producto, codigo, nombre, descripcion, precio_venta, activo, id_categoria, id_unidad_medida, id_ubicacion, id_marca, id_modelo) VALUES ('3e0cc82c-ab54-456d-abad-9138f2e29594', 'BUZZER PASIVO', 'Buzzer pasivo', NULL, 5.0000, true, 'ef120b15-ee1c-4558-a6f1-b8787784f9ef', '643fe0a8-d95d-42eb-bb98-c82f738d6c84', '2d33feab-966e-431e-8503-9270a2cccfff', NULL, NULL) ON CONFLICT (codigo) DO NOTHING;
 INSERT INTO producto (id_producto, codigo, nombre, descripcion, precio_venta, activo, id_categoria, id_unidad_medida, id_ubicacion, id_marca, id_modelo) VALUES ('4d38dfc0-bd6b-4506-b4ea-22d43c67ac53', 'TRIMPOT 10K', 'Trimpot 10K', NULL, 3.0000, true, 'ef120b15-ee1c-4558-a6f1-b8787784f9ef', '643fe0a8-d95d-42eb-bb98-c82f738d6c84', '2d33feab-966e-431e-8503-9270a2cccfff', NULL, NULL) ON CONFLICT (codigo) DO NOTHING;
+
+-- COMPATIBILIDAD (producto <-> modelo de placa/microcontrolador)
+-- Se relaciona por codigo de producto y nombre de modelo. Los productos sin controlador
+-- (diodos, transistores, reguladores, CI sueltos, modulos de alimentacion y pasivos)
+-- no tienen compatibilidad. Total de filas: 70.
+INSERT INTO compatibilidad (id_producto, id_modelo, observaciones)
+SELECT p.id_producto, m.id_modelo, v.observaciones
+FROM (VALUES
+    ('ATMEGA328P', 'ARDUINO UNO R3', 'Microcontrolador que usan estas placas'),
+    ('ATMEGA328P', 'ARDUINO NANO', 'Microcontrolador que usan estas placas'),
+    ('DHT11', 'ARDUINO UNO R3', NULL),
+    ('DHT11', 'ARDUINO NANO', NULL),
+    ('DHT11', 'ARDUINO MEGA 2560', NULL),
+    ('DHT11', 'ESP32 DEVKIT', NULL),
+    ('DHT22', 'ARDUINO UNO R3', NULL),
+    ('DHT22', 'ARDUINO NANO', NULL),
+    ('DHT22', 'ARDUINO MEGA 2560', NULL),
+    ('DHT22', 'ESP32 DEVKIT', NULL),
+    ('HC-SR04', 'ARDUINO UNO R3', NULL),
+    ('HC-SR04', 'ARDUINO NANO', NULL),
+    ('HC-SR04', 'ARDUINO MEGA 2560', NULL),
+    ('HC-SR04', 'ESP32 DEVKIT', 'Usar divisor de voltaje en ECHO (logica de 3.3V)'),
+    ('MPU6050', 'ARDUINO UNO R3', 'Comunicacion I2C'),
+    ('MPU6050', 'ARDUINO NANO', 'Comunicacion I2C'),
+    ('MPU6050', 'ARDUINO MEGA 2560', 'Comunicacion I2C'),
+    ('MPU6050', 'ESP32 DEVKIT', 'Comunicacion I2C'),
+    ('LDR', 'ARDUINO UNO R3', 'Entrada analogica con divisor de voltaje'),
+    ('LDR', 'ARDUINO NANO', 'Entrada analogica con divisor de voltaje'),
+    ('LDR', 'ARDUINO MEGA 2560', 'Entrada analogica con divisor de voltaje'),
+    ('LDR', 'ESP32 DEVKIT', 'Entrada analogica con divisor de voltaje'),
+    ('LDR', 'PIC16F877A', 'Entrada analogica con divisor de voltaje'),
+    ('LCD 1602', 'ARDUINO UNO R3', NULL),
+    ('LCD 1602', 'ARDUINO NANO', NULL),
+    ('LCD 1602', 'ARDUINO MEGA 2560', NULL),
+    ('LCD 1602', 'PIC16F877A', NULL),
+    ('OLED 0.96', 'ARDUINO UNO R3', 'Comunicacion I2C'),
+    ('OLED 0.96', 'ARDUINO NANO', 'Comunicacion I2C'),
+    ('OLED 0.96', 'ARDUINO MEGA 2560', 'Comunicacion I2C'),
+    ('OLED 0.96', 'ESP32 DEVKIT', 'Comunicacion I2C'),
+    ('MAX7219', 'ARDUINO UNO R3', 'Comunicacion SPI'),
+    ('MAX7219', 'ARDUINO NANO', 'Comunicacion SPI'),
+    ('MAX7219', 'ARDUINO MEGA 2560', 'Comunicacion SPI'),
+    ('HC-05', 'ARDUINO UNO R3', 'Usar divisor de voltaje en RX (logica de 3.3V)'),
+    ('HC-05', 'ARDUINO NANO', 'Usar divisor de voltaje en RX (logica de 3.3V)'),
+    ('HC-05', 'ARDUINO MEGA 2560', 'Usar divisor de voltaje en RX (logica de 3.3V)'),
+    ('NRF24L01', 'ARDUINO UNO R3', 'Alimentar a 3.3V; comunicacion SPI'),
+    ('NRF24L01', 'ARDUINO NANO', 'Alimentar a 3.3V; comunicacion SPI'),
+    ('NRF24L01', 'ARDUINO MEGA 2560', 'Alimentar a 3.3V; comunicacion SPI'),
+    ('NRF24L01', 'ESP32 DEVKIT', 'Alimentar a 3.3V; comunicacion SPI'),
+    ('SIM800L', 'ARDUINO UNO R3', 'Requiere fuente externa de 3.7-4.2V y 2A'),
+    ('SIM800L', 'ARDUINO NANO', 'Requiere fuente externa de 3.7-4.2V y 2A'),
+    ('SIM800L', 'ARDUINO MEGA 2560', 'Requiere fuente externa de 3.7-4.2V y 2A'),
+    ('SIM800L', 'ESP32 DEVKIT', 'Requiere fuente externa de 3.7-4.2V y 2A'),
+    ('L298N', 'ARDUINO UNO R3', NULL),
+    ('L298N', 'ARDUINO NANO', NULL),
+    ('L298N', 'ARDUINO MEGA 2560', NULL),
+    ('L298N', 'ESP32 DEVKIT', NULL),
+    ('L293D', 'ARDUINO UNO R3', NULL),
+    ('L293D', 'ARDUINO NANO', NULL),
+    ('L293D', 'ARDUINO MEGA 2560', NULL),
+    ('L293D', 'ESP32 DEVKIT', NULL),
+    ('L293D', 'PIC16F877A', NULL),
+    ('A4988', 'ARDUINO UNO R3', NULL),
+    ('A4988', 'ARDUINO NANO', NULL),
+    ('A4988', 'ARDUINO MEGA 2560', NULL),
+    ('A4988', 'ESP32 DEVKIT', NULL),
+    ('MODULO RELE 1CH', 'ARDUINO UNO R3', 'Alimentar el modulo a 5V'),
+    ('MODULO RELE 1CH', 'ARDUINO NANO', 'Alimentar el modulo a 5V'),
+    ('MODULO RELE 1CH', 'ARDUINO MEGA 2560', 'Alimentar el modulo a 5V'),
+    ('MODULO RELE 1CH', 'ESP32 DEVKIT', 'Alimentar el modulo a 5V'),
+    ('MODULO RELE 4CH', 'ARDUINO UNO R3', 'Alimentar el modulo a 5V'),
+    ('MODULO RELE 4CH', 'ARDUINO NANO', 'Alimentar el modulo a 5V'),
+    ('MODULO RELE 4CH', 'ARDUINO MEGA 2560', 'Alimentar el modulo a 5V'),
+    ('MODULO RELE 4CH', 'ESP32 DEVKIT', 'Alimentar el modulo a 5V'),
+    ('SERVOMOTOR SG90', 'ARDUINO UNO R3', 'Alimentar el servo a 5V'),
+    ('SERVOMOTOR SG90', 'ARDUINO NANO', 'Alimentar el servo a 5V'),
+    ('SERVOMOTOR SG90', 'ARDUINO MEGA 2560', 'Alimentar el servo a 5V'),
+    ('SERVOMOTOR SG90', 'ESP32 DEVKIT', 'Alimentar el servo a 5V')
+) AS v(codigo, modelo, observaciones)
+JOIN producto p ON p.codigo = v.codigo
+JOIN modelo m ON m.nombre = v.modelo
+ON CONFLICT DO NOTHING;
 
 -- EXISTENCIAS (arrancan en 0; se llenan con movimientos de compra reales)
 INSERT INTO existencia (id_producto, stock_actual, stock_minimo, costo_promedio)
