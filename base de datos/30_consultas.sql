@@ -1,4 +1,9 @@
 -- =====================================================================
+-- 4. CONSULTAS - ELECTRÓNICA CENTRAL AZ (ESQUEMA: electronica_az)
+--    Adaptadas al script de la base (1_script_base_datos_electronica_az.sql)
+-- =====================================================================
+
+SET search_path = electronica_az, public;
 
 
 --                  CONSULTAS SIMPLES
@@ -23,7 +28,8 @@ ORDER BY nombre ASC;
 
 
 -- 3: Categorías de productos registradas (CU5)
-SELECT nombre, descripcion
+SELECT nombre, descripcion, activo,
+       CASE WHEN id_categoria_padre IS NULL THEN 'Principal' ELSE 'Subcategoría' END AS tipo
 FROM categoria
 ORDER BY nombre ASC;
 -- Propósito: Da una vista consolidada de las categorías existentes en el
@@ -94,13 +100,17 @@ ORDER BY c.fecha DESC;
 
 
 -- 10: Ubicación física de cada producto en almacén (CU4, CU11)
-SELECT p.codigo, p.nombre, u.codigo AS ubicacion, u.pasillo, u.estante
+SELECT p.codigo, p.nombre,
+       COALESCE(u.codigo, 'SIN UBICACIÓN') AS ubicacion, u.pasillo, u.estante
 FROM producto p
-JOIN ubicacion u ON p.id_ubicacion = u.id_ubicacion
-ORDER BY u.pasillo, u.estante;
+LEFT JOIN ubicacion u ON p.id_ubicacion = u.id_ubicacion
+WHERE p.activo = true
+ORDER BY u.pasillo NULLS LAST, u.estante, p.nombre;
 -- Propósito: El personal de bodega usa este listado para saber exactamente
 --   en qué pasillo y estante se encuentra cada producto, agilizando el
 --   picking al momento de despachar o reabastecer.
+-- Nota: LEFT JOIN porque la ubicación es opcional (se asigna con CU-21);
+--   los productos sin ubicación aparecen al final para completarlos.
 
 
 --               CONSULTAS MÚLTIPLES
@@ -209,19 +219,18 @@ ORDER BY rb.fecha_hora DESC;
 -- Propósito: Audita las ventas que fueron revertidas, mostrando quién
 --   ejecutó la anulación y cuándo, previniendo fraudes o cancelaciones
 --   no autorizadas.
--- Nota importante: la tabla venta NO tiene columnas propias de anulación
---   (fecha/motivo/usuario), así que este reporte se apoya en registro_bitacora
---   guardando el id_venta como texto en "objeto_afectado" y un valor de
---   convención en "accion" (aquí 'ANULAR_VENTA'). Ajusta ese valor al que
---   realmente registre tu aplicación, o mejor aún, agrega columnas
---   fecha_anulacion / id_usuario_anulacion / motivo_anulacion a "venta"
---   si necesitas este reporte de forma confiable.
+-- Nota: la tabla venta no guarda quién ni cuándo se anuló; el dato se toma
+--   de registro_bitacora, donde sp_anular_venta registra la acción
+--   'ANULAR_VENTA' con el id de la venta en "objeto_afectado".
 
 
 -- 19: Solicitudes de producto por cliente con atención de usuario (CU17, CU14)
 SELECT s.id_solicitud, c.nombre AS cliente, s.descripcion_producto,
        p.nombre AS producto_sugerido, mo.nombre AS modelo_sugerido,
-       s.estado, u.nombre_usuario AS atendido_por
+       s.estado,
+       CASE WHEN s.estado = 'PENDIENTE' THEN 'Registrada por'
+            ELSE 'Atendida/cancelada por' END AS rol_usuario,
+       u.nombre_usuario AS usuario
 FROM solicitud_producto s
 JOIN cliente c ON s.id_cliente = c.id_cliente
 JOIN usuario u ON s.id_usuario = u.id_usuario
@@ -231,6 +240,8 @@ ORDER BY s.fecha_hora DESC;
 -- Propósito: Consolida los pedidos especiales o solicitudes de productos
 --   no disponibles, cruzando quién los pidió, qué usuario los atendió y a
 --   qué producto/modelo se asociaron finalmente (si aplica).
+-- Nota: la tabla guarda un solo usuario; sp_atender_solicitud_producto y
+--   sp_cancelar_solicitud_producto lo reemplazan por quien la atendió.
 
 
 -- 20: Comprobantes emitidos con cliente y total pagado (CU16, CU18)
@@ -240,6 +251,7 @@ FROM comprobante co
 JOIN venta v ON co.id_venta = v.id_venta
 JOIN cliente cl ON v.id_cliente = cl.id_cliente
 JOIN pago pg ON v.id_venta = pg.id_venta
+            AND pg.estado = 'CONFIRMADO'
 GROUP BY co.numero, co.fecha_emision, cl.nombre, v.estado
 ORDER BY co.fecha_emision DESC;
 -- Propósito: Une el comprobante fiscal con la venta, el cliente y la suma
@@ -259,11 +271,17 @@ ORDER BY nombre;
 --   busquen incentivar su primera compra.
 
 
--- 22: Inventario inmovilizado — productos sin historial de ventas (CU11, CU20)
+-- 22: Inventario inmovilizado — productos sin historial de ventas (CU11, CU18)
 SELECT p.codigo, p.nombre, e.stock_actual
 FROM producto p
 JOIN existencia e ON p.id_producto = e.id_producto
-WHERE p.id_producto NOT IN (SELECT id_producto FROM detalle_venta)
+WHERE p.activo = true
+  AND e.stock_actual > 0
+  AND p.id_producto NOT IN (
+        SELECT dv.id_producto
+        FROM detalle_venta dv
+        JOIN venta v ON dv.id_venta = v.id_venta
+        WHERE v.estado = 'CONFIRMADA')
 ORDER BY e.stock_actual DESC;
 -- Propósito: Detecta productos con stock disponible que nunca han figurado
 --   en una venta. Permite decidir aplicar descuentos, armar combos o dejar
@@ -277,6 +295,7 @@ JOIN (
     SELECT c.id_proveedor, SUM(dc.cantidad * dc.costo_unitario) AS total_comprado
     FROM compra c
     JOIN detalle_compra dc ON c.id_compra = dc.id_compra
+    WHERE c.estado <> 'CANCELADA'
     GROUP BY c.id_proveedor
 ) sub ON pr.id_proveedor = sub.id_proveedor
 ORDER BY sub.total_comprado DESC
@@ -290,7 +309,8 @@ LIMIT 5;
 SELECT v.id_venta, v.fecha_hora, pg.monto
 FROM venta v
 JOIN pago pg ON v.id_venta = pg.id_venta
-WHERE pg.monto > (SELECT AVG(monto) FROM pago)
+WHERE pg.estado = 'CONFIRMADO'
+  AND pg.monto > (SELECT AVG(monto) FROM pago WHERE estado = 'CONFIRMADO')
 ORDER BY pg.monto DESC;
 -- Propósito: Identifica pagos que superan el ticket promedio de la tienda,
 --   útil para reconocer clientes "mayoristas" o VIP a quienes ofrecer
@@ -299,11 +319,13 @@ ORDER BY pg.monto DESC;
 
 -- 25: Resumen de compras y montos por cada proveedor (CU13, CU12)
 SELECT pr.razon_social,
-       (SELECT COUNT(*) FROM compra c WHERE c.id_proveedor = pr.id_proveedor) AS cantidad_compras,
+       (SELECT COUNT(*) FROM compra c
+        WHERE c.id_proveedor = pr.id_proveedor AND c.estado <> 'CANCELADA') AS cantidad_compras,
        (SELECT COALESCE(SUM(dc.cantidad * dc.costo_unitario), 0)
         FROM compra c
         JOIN detalle_compra dc ON c.id_compra = dc.id_compra
-        WHERE c.id_proveedor = pr.id_proveedor) AS monto_total
+        WHERE c.id_proveedor = pr.id_proveedor
+          AND c.estado <> 'CANCELADA') AS monto_total
 FROM proveedor pr
 ORDER BY monto_total DESC;
 -- Propósito: Construye un tablero resumido con subconsultas en el SELECT
@@ -311,18 +333,19 @@ ORDER BY monto_total DESC;
 --   proveedor, agilizando el cierre contable de cuentas por pagar.
 
 
--- 26: Productos con stock por debajo del promedio general (CU11, CU20)
+-- 26: Productos con stock por debajo del promedio general (CU11, CU18)
 SELECT p.codigo, p.nombre, e.stock_actual
 FROM producto p
 JOIN existencia e ON p.id_producto = e.id_producto
-WHERE e.stock_actual < (SELECT AVG(stock_actual) FROM existencia)
+WHERE p.activo = true
+  AND e.stock_actual < (SELECT AVG(stock_actual) FROM existencia)
 ORDER BY e.stock_actual ASC;
 -- Propósito: Detecta productos cuyo stock está por debajo de la media de
 --   todo el inventario, funcionando como alerta temprana ante posibles
 --   quiebres de stock en artículos de rotación más rápida.
 
 
--- 27: Top 5 clientes con mayor gasto total (pagos confirmados) (CU18, CU19)
+-- 27: Top 5 clientes con mayor gasto total (pagos confirmados) (CU18)
 SELECT c.nombre, sub.total_pagado
 FROM cliente c
 JOIN (
@@ -344,11 +367,13 @@ SELECT c.nombre, pg.fecha_hora, pg.monto
 FROM cliente c
 JOIN venta v ON c.id_cliente = v.id_cliente
 JOIN pago pg ON v.id_venta = pg.id_venta
-WHERE pg.fecha_hora = (
+WHERE pg.estado = 'CONFIRMADO'
+  AND pg.fecha_hora = (
     SELECT MAX(pg2.fecha_hora)
     FROM pago pg2
     JOIN venta v2 ON pg2.id_venta = v2.id_venta
     WHERE v2.id_cliente = c.id_cliente
+      AND pg2.estado = 'CONFIRMADO'
 )
 ORDER BY pg.fecha_hora DESC;
 -- Propósito: Extrae, con una subconsulta correlacionada, la fecha del
@@ -356,7 +381,7 @@ ORDER BY pg.fecha_hora DESC;
 --   y reactivar su interés comercial.
 
 
--- 29: Utilidad bruta exacta calculada por cada venta (CU19)
+-- 29: Utilidad bruta exacta calculada por cada venta (CU18)
 SELECT v.id_venta, v.fecha_hora,
        sub.ingreso_total, sub.costo_total,
        (sub.ingreso_total - sub.costo_total) AS utilidad_bruta
@@ -380,6 +405,7 @@ SELECT sub.metodo, sub.cantidad_pagos
 FROM (
     SELECT metodo, COUNT(*) AS cantidad_pagos
     FROM pago
+    WHERE estado = 'CONFIRMADO'
     GROUP BY metodo
 ) sub
 ORDER BY sub.cantidad_pagos DESC;
