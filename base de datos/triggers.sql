@@ -1,5 +1,6 @@
 -- ============================================================
--- TRIGGERS - ELECTRÓNICA CENTRAL AZ (ESQUEMA: electronica_az)
+-- 2. TRIGGERS - ELECTRÓNICA CENTRAL AZ (ESQUEMA: electronica_az)
+-- Ejecutar después del script de la base de datos
 -- ============================================================
 
 SET search_path = electronica_az, public;
