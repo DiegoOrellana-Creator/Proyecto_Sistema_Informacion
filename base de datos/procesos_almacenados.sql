@@ -1,3 +1,26 @@
+Claude
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Procedimientos corregido · SQL
 -- ============================================================
 -- PROCEDIMIENTOS Y FUNCIONES - ELECTRÓNICA CENTRAL AZ
 -- Esquema: electronica_az
@@ -183,6 +206,8 @@ DECLARE
     v_detalle RECORD;
     v_stock numeric(18,4);
     v_costo numeric(18,4);
+    v_total_venta numeric(18,4);   -- [CORRECCIÓN]
+    v_total_pagado numeric(18,4);  -- [CORRECCIÓN]
 BEGIN
     SELECT estado
     INTO v_estado
@@ -204,6 +229,23 @@ BEGIN
         WHERE id_venta = p_id_venta
     ) THEN
         RAISE EXCEPTION 'La venta no tiene productos registrados en su detalle';
+    END IF;
+
+    -- [CORRECCIÓN] CU-15: el pago confirmado debe cubrir el total de la venta
+    SELECT COALESCE(SUM(cantidad * precio_unitario), 0)
+    INTO v_total_venta
+    FROM electronica_az.detalle_venta
+    WHERE id_venta = p_id_venta;
+
+    SELECT COALESCE(SUM(monto), 0)
+    INTO v_total_pagado
+    FROM electronica_az.pago
+    WHERE id_venta = p_id_venta
+      AND estado = 'CONFIRMADO';
+
+    IF v_total_pagado < v_total_venta THEN
+        RAISE EXCEPTION 'El pago confirmado (BOB %) no cubre el total de la venta (BOB %)',
+            v_total_pagado, v_total_venta;
     END IF;
 
     FOR v_detalle IN
@@ -290,6 +332,7 @@ AS $$
 DECLARE
     v_estado varchar(120);
     v_detalle RECORD;
+    v_tiene_entrega boolean := false;  -- [CORRECCIÓN]
 BEGIN
     SELECT estado
     INTO v_estado
@@ -306,10 +349,16 @@ BEGIN
     END IF;
 
     -- Validar que no se haya realizado entrega física
-    IF EXISTS (
-        SELECT 1 FROM electronica_az.entrega WHERE id_venta = p_id_venta
-    ) THEN
-        RAISE EXCEPTION 'No se puede anular una venta que ya cuenta con entrega física registrada';
+    -- [CORRECCIÓN] La tabla "entrega" no está en el script del documento.
+    -- Si existe en la base, se valida; si no existe, se omite la validación.
+    IF to_regclass('electronica_az.entrega') IS NOT NULL THEN
+        EXECUTE 'SELECT EXISTS (SELECT 1 FROM electronica_az.entrega WHERE id_venta = $1)'
+        INTO v_tiene_entrega
+        USING p_id_venta;
+
+        IF v_tiene_entrega THEN
+            RAISE EXCEPTION 'No se puede anular una venta que ya cuenta con entrega física registrada';
+        END IF;
     END IF;
 
     -- Si estaba confirmada, se revierte el stock con su costo histórico
@@ -669,3 +718,94 @@ BEGIN
     );
 END;
 $$;
+ 
+-- ============================================================
+-- 11. [NUEVO] REGISTRAR AJUSTE DE INVENTARIO (CU-11)
+--     Entrada: suma stock y recalcula el costo promedio.
+--     Salida : valida stock suficiente y usa el costo promedio vigente.
+-- ============================================================
+CREATE OR REPLACE PROCEDURE electronica_az.sp_ajustar_inventario(
+    p_id_producto uuid,
+    p_tipo varchar(120),
+    p_cantidad numeric(18,4),
+    p_motivo text,
+    p_costo_unitario numeric(18,4),
+    p_id_usuario uuid,
+    p_direccion_ip inet DEFAULT NULL
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_stock numeric(18,4);
+    v_costo numeric(18,4);
+BEGIN
+    IF p_tipo NOT IN ('ENTRADA', 'SALIDA') THEN
+        RAISE EXCEPTION 'Tipo de ajuste no válido: %', p_tipo;
+    END IF;
+ 
+    IF p_cantidad IS NULL OR p_cantidad <= 0 THEN
+        RAISE EXCEPTION 'La cantidad debe ser mayor que cero';
+    END IF;
+ 
+    IF btrim(COALESCE(p_motivo, '')) = '' THEN
+        RAISE EXCEPTION 'Debe indicar el motivo del ajuste';
+    END IF;
+ 
+    IF p_tipo = 'ENTRADA' AND p_costo_unitario IS NULL THEN
+        RAISE EXCEPTION 'Una entrada debe indicar el costo unitario';
+    END IF;
+ 
+    SELECT stock_actual, costo_promedio
+    INTO v_stock, v_costo
+    FROM electronica_az.existencia
+    WHERE id_producto = p_id_producto
+    FOR UPDATE;
+ 
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'El producto % no tiene existencia registrada', p_id_producto;
+    END IF;
+ 
+    IF p_tipo = 'ENTRADA' THEN
+        UPDATE electronica_az.existencia
+        SET
+            costo_promedio = ((v_stock * v_costo) + (p_cantidad * p_costo_unitario)) / (v_stock + p_cantidad),
+            stock_actual = v_stock + p_cantidad
+        WHERE id_producto = p_id_producto;
+    ELSE
+        IF v_stock < p_cantidad THEN
+            RAISE EXCEPTION 'Stock insuficiente. Stock actual: %, Solicitado: %', v_stock, p_cantidad;
+        END IF;
+ 
+        UPDATE electronica_az.existencia
+        SET stock_actual = v_stock - p_cantidad
+        WHERE id_producto = p_id_producto;
+    END IF;
+ 
+    INSERT INTO electronica_az.movimiento_inventario (
+        tipo,
+        cantidad,
+        motivo,
+        costo_unitario,
+        id_producto,
+        id_usuario
+    )
+    VALUES (
+        p_tipo,
+        p_cantidad,
+        p_motivo,
+        CASE WHEN p_tipo = 'ENTRADA' THEN p_costo_unitario ELSE v_costo END,
+        p_id_producto,
+        p_id_usuario
+    );
+ 
+    PERFORM electronica_az.fn_registrar_bitacora(
+        'AJUSTAR_INVENTARIO',
+        p_id_producto::text,
+        p_tipo || ' de ' || p_cantidad::text || ' - ' || p_motivo,
+        p_id_usuario,
+        p_direccion_ip
+    );
+END;
+$$;
+ 
+Claude terminó la respuesta
